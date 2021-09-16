@@ -146,14 +146,22 @@ if my_ip.eql? node['hops']['nn']['private_ips'][0]
     end
   end
 
-  # Add 'glassfish' to 'hdfs' superusers group
+    # Add 'glassfish' to 'hdfs' superusers group
     hops_hdfs_directory "#{node['hops']['hdfs']['user_home']}/#{node['hopsworks']['user']}" do
       action :create_as_superuser
       owner node['hopsworks']['user']
       group node['hops']['group']
       mode "1750"
     end
+    # Add 'airflow' to 'hdfs' superusers group
+    hops_hdfs_directory "#{node['hops']['hdfs']['user_home']}/#{node['airflow']['user']}" do
+      action :create_as_superuser
+      owner node['airflow']['user']
+      group node['hops']['group']
+      mode "1750"
+    end
 
+    
     # Create weblogs dir for Glassfish
     hops_hdfs_directory "#{node['hops']['hdfs']['user_home']}/#{node['hopsworks']['user']}/webserver_logs" do
       action :create_as_superuser
