@@ -1,0 +1,16 @@
+[Unit]
+Description = cAdvisor
+StartLimitIntervalSec=30
+StartLimitBurst=20
+
+[Service]
+User = <%= node['ndb']['user'] %>
+ExecStart = <%= node['hops']['sbin_dir'] %>/cAdvisor \
+--port=:<%= node['hops']['cadvisor']['port'] %>
+LimitNOFILE = 20000
+Restart=on-failure
+
+Type = simple
+
+[Install]
+WantedBy = multi-user.target

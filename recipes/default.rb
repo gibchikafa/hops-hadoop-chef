@@ -400,3 +400,5 @@ cookbook_file "#{node['hops']['conf_dir']}/namenode.yaml" do
   group node['hops']['group']
   mode 500
 end
+
+include_recipe "hops::cadvisor"
