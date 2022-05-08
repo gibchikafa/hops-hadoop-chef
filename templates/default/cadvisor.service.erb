@@ -5,7 +5,7 @@ StartLimitBurst=20
 
 [Service]
 User = <%= node['ndb']['user'] %>
-ExecStart = <%= node['hops']['sbin_dir'] %>/cAdvisor \
+ExecStart = <%= node['hops']['sbin_dir'] %>/cadvisor \
 --port=:<%= node['hops']['cadvisor']['port'] %>
 LimitNOFILE = 20000
 Restart=on-failure

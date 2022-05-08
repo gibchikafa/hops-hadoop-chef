@@ -10,7 +10,7 @@ remote_file cadvisor_bin do
   action :create_if_missing
 end
 
-link "#{node['hops']['sbin_dir']}/cAdvisor" do
+link "#{node['hops']['sbin_dir']}/cadvisor" do
   owner "root"
   to "#{cadvisor_bin}"
 end

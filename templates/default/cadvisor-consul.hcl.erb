@@ -1,13 +1,13 @@
 service {
   id = "docker/monitoring"
-  name = "cAdvisor"
+  name = "cadvisor"
   tags = [
   "docker-monitoring"
   ]
   port = <%= node['hops']['cadvisor']['port']  %>
   check = {
     id = "cadvisor-check"
-    name = "Health check for cAdvisor"
+    name = "Health check for cadvisor"
     http = "http://localhost:<%= node['hops']['cadvisor']['port'] %>/metrics"
     interval = "20s"
     timeout = "20s"
