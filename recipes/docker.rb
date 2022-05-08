@@ -204,12 +204,13 @@ if node['hops']['docker']['cgroup']['enabled'].eql?("true")
     user 'root'
     group 'root'
     code <<-EOH
+        "apt install cgroup-tools  -y" 
+        "cgcreate -g *:docker"
         "echo #{docker_cgroup_cpu_cfs_quota_us} > #{docker_cpu_cgroup_dir}/cpu.cfs_quota_us"
         "echo #{node['hops']['docker']['cgroup']['cpu']["period"]} > #{docker_cpu_cgroup_dir}/cpu.cfs_period_us"
         "echo #{docker_cgroup_memory_limit_bytes} > #{docker_memory_cgroup_dir}/memory.limit_in_bytes"
         "echo #{docker_cgroup_memory_soft_limit_bytes} > #{docker_memory_cgroup_dir}/memory.soft_limit_in_bytes"
     EOH
-    only_if { ::File.directory?(docker_memory_cgroup_dir) }
   end
 end
 
