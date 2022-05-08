@@ -1,7 +1,16 @@
+#make cadvisor dir
+directory "#{node['hops']['cadvisor']['dir']}" do
+  owner "root"
+  group "root"
+  mode "0700"
+  action :create
+  not_if { ::File.directory?(node['hops']['cadvisor']['dir']) }
+end
+
 # download cadvisor bin
 cadvisor_bin_url = node['hops']['cadvisor']['download-url']
 bin_name = File.basename(cadvisor_bin_url)
-cadvisor_bin = "#{node['hops']['sbin_dir']}/#{bin_name}"
+cadvisor_bin = "#{node['hops']['cadvisor']['dir'] }/#{bin_name}"
 
 remote_file cadvisor_bin do
   source cadvisor_bin_url
@@ -10,10 +19,12 @@ remote_file cadvisor_bin do
   action :create_if_missing
 end
 
+=begin
 link "#{node['hops']['sbin_dir']}/cadvisor" do
   owner "root"
   to "#{cadvisor_bin}"
 end
+=end
 
 case node['platform_family']
 when "rhel"
@@ -37,6 +48,9 @@ template systemd_script do
     notifies :enable, "service[cadvisor]"
   end
   notifies :restart, "service[cadvisor]"
+  variables({
+              'cadvisor_bin' => cadvisor_bin
+            })
 end
 
 kagent_config "cadvisor" do

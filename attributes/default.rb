@@ -535,6 +535,7 @@ default['hops']['yarn']['is-elastic']              = "false"
 default['hops']['nn']['audit_log']                 = "false"
 default['hops']['rm']['audit_log']                 = "false"
 
+default['hops']['cadvisor']['dir']                 = "#{node['hops']['dir']}/cadvisor"
 default['hops']['cadvisor']['download-url']        = "#{node['download_url']}/docker/cadvisor"
 default['hops']['cadvisor']['port']                = "4194"
 
