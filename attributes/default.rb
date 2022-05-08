@@ -537,3 +537,9 @@ default['hops']['rm']['audit_log']                 = "false"
 
 default['hops']['cadvisor']['download-url']        = "#{node['download_url']}/docker/cadvisor"
 default['hops']['cadvisor']['port']                = "4194"
+
+default['hops']['docker']['cgroup']['enabled']                    = "true"
+default['hops']['docker']['cgroup']['memory']['limit']["GB"]      = 6
+default['hops']['docker']['cgroup']['memory']['soft-limit']['GB'] = 2
+default['hops']['docker']['cgroup']['cpu']["percentage"]          = 40
+default['hops']['docker']['cgroup']['cpu']["period"]              = 100000
