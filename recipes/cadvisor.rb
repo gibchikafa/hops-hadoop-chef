@@ -1,4 +1,4 @@
-# download fuse mount bin
+# download cadvisor bin
 cadvisor_bin_url = node['hops']['cadvisor']['download-url']
 bin_name = File.basename(cadvisor_bin_url)
 cadvisor_bin = "#{node['hops']['sbin_dir']}/#{bin_name}"
