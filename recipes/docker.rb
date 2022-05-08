@@ -194,7 +194,7 @@ if service_discovery_enabled()
   insecure_registries << "#{registry_host}:#{node['hops']['docker']['registry']['port']}"
 end
 
-if ['hops']['docker']['cgroup']['enabled'].eql?("true")
+if node['hops']['docker']['cgroup']['enabled'].eql?("true")
   docker_memory_cgroup_dir = "/sys/fs/cgroup/memory/docker"
   docker_cpu_cgroup_dir = "/sys/fs/cgroup/cpu/docker"
   docker_cgroup_memory_limit_bytes = node['hops']['docker']['cgroup']['memory']['limit']["GB"] * 1073741824
