@@ -76,6 +76,25 @@ bash "start_docker_registry" do
   not_if "docker container inspect registry"
 end
 
+# at this point the docker cgroup is created
+if node['hops']['docker']['cgroup']['enabled'].eql?("true")
+  docker_memory_cgroup_dir = "/sys/fs/cgroup/memory/docker"
+  docker_cpu_cgroup_dir = "/sys/fs/cgroup/cpu/docker"
+  docker_cgroup_memory_limit_bytes = node['hops']['docker']['cgroup']['memory']['limit']["GB"] * 1073741824
+  docker_cgroup_memory_soft_limit_bytes = node['hops']['docker']['cgroup']['memory']['soft-limit']["GB"] * 1073741824
+  docker_cgroup_cpu_cfs_quota_us = node['hops']['docker']['cgroup']['cpu']["period"] * (node['hops']['docker']['cgroup']['cpu']["percentage"] / 100)
+  bash "install_pkgs" do
+    user 'root'
+    group 'root'
+    code <<-EOH
+        echo #{docker_cgroup_cpu_cfs_quota_us} > #{docker_cpu_cgroup_dir}/cpu.cfs_quota_us
+        echo #{node['hops']['docker']['cgroup']['cpu']["period"]} > #{docker_cpu_cgroup_dir}/cpu.cfs_period_us
+        echo #{docker_cgroup_memory_limit_bytes} > #{docker_memory_cgroup_dir}/memory.limit_in_bytes
+        echo #{docker_cgroup_memory_soft_limit_bytes} > #{docker_memory_cgroup_dir}/memory.soft_limit_in_bytes
+    EOH
+  end
+end
+
 consul_crypto_dir = x509_helper.get_crypto_dir(node['consul']['user'])
 if service_discovery_enabled()
   #Register registry with Consul
