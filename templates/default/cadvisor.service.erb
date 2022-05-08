@@ -1,12 +1,11 @@
 [Unit]
-Description = cAdvisor
+Description = cadvisor
 StartLimitIntervalSec=30
 StartLimitBurst=20
 
 [Service]
-User = <%= node['ndb']['user'] %>
 ExecStart = <%= @cadvisor_bin %> \
---port=:<%= node['hops']['cadvisor']['port'] %>
+--port=<%= node['hops']['cadvisor']['port'] %>
 LimitNOFILE = 20000
 Restart=on-failure
 

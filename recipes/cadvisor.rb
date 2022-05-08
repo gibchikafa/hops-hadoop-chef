@@ -15,7 +15,7 @@ cadvisor_bin = "#{node['hops']['cadvisor']['dir'] }/#{bin_name}"
 remote_file cadvisor_bin do
   source cadvisor_bin_url
   owner "root"
-  mode "0644"
+  mode "0755"
   action :create_if_missing
 end
 
@@ -28,9 +28,9 @@ end
 
 case node['platform_family']
 when "rhel"
-  systemd_script = "/usr/lib/systemd/system/cAdvisor.service"
+  systemd_script = "/usr/lib/systemd/system/cadvisor.service"
 else
-  systemd_script = "/lib/systemd/system/cAdvisor.service"
+  systemd_script = "/lib/systemd/system/cadvisor.service"
 end
 
 service "cadvisor" do
@@ -55,13 +55,6 @@ end
 
 kagent_config "cadvisor" do
   action :systemd_reload
-end
-
-if node['kagent']['enabled'] == "true"
-  kagent_config "cadvisor" do
-    service "cadvisor"
-    restart_agent false
-  end
 end
 
 if exists_local('consul', 'master') or exists_local('consul', 'slave')
